@@ -1,3 +1,28 @@
+import java.io.File
+import java.io.InputStream
+
+class IOdata {
+    private val dataDir = "data"
+    private fun checkDataDir(directory: String = this.dataDir): Boolean {
+        return if(!File(directory).exists()) File(directory).mkdir() else true
+    }
+    private fun checkDataFiles(directory: String, filename: String): Boolean {
+        this.checkDataDir(this.dataDir)
+        val dir = File(this.dataDir, directory).toString()
+        this.checkDataDir(dir)
+        return if(!File(dir, filename).exists()) File(dir, filename).createNewFile() else true
+    }
+    fun readData(directory: String = this.dataDir, filename: String) {
+        this.checkDataFiles(directory, filename)
+        val inputStream: InputStream = File(directory, filename).inputStream()
+        return inputStream.bufferedReader().use { it.readText() }
+    }
+    fun writeData(data: String, directory: String, filename: String) {
+        val dir = File(this.dataDir, directory).toString()
+        this.checkDataFiles(directory, filename)
+        File(dir, filename).bufferedWriter().use { out -> out.write(data) }
+    }
+}
 class Exam(certificate: Int, math: Int, ukrainian: Int, physics: Int = 0, english: Int = 0) {
     private var certificate = 0
     private var first = 0
@@ -45,11 +70,20 @@ class University: Entering() {
     override fun failure(enrollee: Enrollee) = println("Sorry, " + enrollee.name() + ", your result is lower than passing score. Try may one more time next year.")
 }
 // Proxy
-class ExamControl(private val passingScore: Int) {
-    private var university = University()
+class ExamControl(private val passingScore: Int) : Entering() {
     fun enter(enrollee: Enrollee) {
-        if(enrollee.result() >= this.passingScore) this.university.success(enrollee)
-        else this.university.failure(enrollee)
+        if(enrollee.result() >= this.passingScore) success(enrollee)
+        else failure(enrollee)
+    }
+    override fun success(enrollee: Enrollee) {
+        val name = enrollee.name()
+        val data = name + " " + enrollee.result().toString()
+        IOdata().writeData(data, name, name + ".txt")
+        println(name + " has successfully passed the exams and his information was written to data directory")
+    }
+    override fun failure(enrollee: Enrollee) {
+        val name = enrollee.name()
+        println(name + " did not pass the exams")
     }
 }
 
