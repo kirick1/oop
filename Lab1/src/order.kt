@@ -79,6 +79,5 @@ fun main(args: Array<String>) {
     headmaster.order("work!!!")
     println("------------------------------------")
     println("After order:\n")
-    println()
     headmaster.display(0, "HEADMASTER")
 }
