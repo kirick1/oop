@@ -1,19 +1,6 @@
-enum class Type {
-    KING { override fun toString() = "king" },
-    QUEEN { override fun toString() = "queen" },
-    ROOK { override fun toString() = "rook" },
-    BISHOP { override fun toString() = "bishop" },
-    KNIGHT { override fun toString() = "knight" },
-    PAWN { override fun toString() = "pawn" },
-    NONE { override fun toString() = "none" };
-    abstract override fun toString(): String
-}
-enum class Colour {
-    BLACK { override fun toString() = "black" },
-    WHITE { override fun toString() = "white" },
-    NONE { override fun toString() = "none" };
-    abstract override fun toString(): String
-}
+enum class Type { KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN, NONE }
+enum class Colour { BLACK, WHITE, NONE }
+
 class Figure(private var type:Type, private var colour:Colour) {
     fun getType():Type = this.type
     fun setType(expectedType:Type) { this.type = expectedType }
