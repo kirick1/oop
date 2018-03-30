@@ -1,4 +1,7 @@
-out
-/lab2/data/
-production/
-/.idea/
+/.vscode/
+/Lab1/felidae.jar
+/Lab2/data/
+/Lab1/order.jar
+/Lab2/enrollee.jar
+/Lab2/food.jar
+/Lab3/chess.jar
