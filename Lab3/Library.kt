@@ -1,10 +1,10 @@
 enum class TicketType {
-  STUDENT { override fun price() = 60.0 },
-  SCHOOL { override fun price() = 50.0 },
-  SCIENCE { override fun price() = 70.0 },
-  ACADEMY { override fun price() = 75.0 },
-  JOURNALIST { override fun price() = 80.0 },
-  SPECIAL { override fun price() = 100.0 };
+  STUDENT { override fun price(): Double = 60.0 },
+  SCHOOL { override fun price(): Double = 50.0 },
+  SCIENCE { override fun price(): Double = 70.0 },
+  ACADEMY { override fun price(): Double = 75.0 },
+  JOURNALIST { override fun price(): Double = 80.0 },
+  SPECIAL { override fun price(): Double = 100.0 };
   abstract fun price(): Double
 }
 const val declaredPhotoPrice: Double = 7.5
