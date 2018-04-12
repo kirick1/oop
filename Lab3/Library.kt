@@ -44,27 +44,27 @@ abstract class TicketFactory {
       PhotoTicket::class -> {
         val ticket = TicketObject(expectedTicketType, true)
         when {
-          budget in ticket.typePrice() .. ticket.typePriceWithPhoto() -> CommonTicketFactory(expectedTicketType)
           budget >= ticket.typePriceWithPhoto() -> PhotoTicketFactory(expectedTicketType)
+          budget >= ticket.typePrice() -> CommonTicketFactory(expectedTicketType)
           else -> throw IllegalArgumentException("Your budget does not allow to by this ticket: " + expectedTicketType.toString())
         }
       }
       HologramTicket::class -> {
         val ticket = TicketObject(expectedTicketType, false, true)
         when {
-          budget in ticket.typePrice() .. ticket.typePriceWithPhoto() -> CommonTicketFactory(expectedTicketType)
-          budget in ticket.typePriceWithPhoto() .. ticket.typePriceWithHologram() -> PhotoTicketFactory(expectedTicketType)
           budget >= ticket.typePriceWithHologram() -> HologramTicketFactory(expectedTicketType)
+          budget >= ticket.typePriceWithPhoto() -> PhotoTicketFactory(expectedTicketType)
+          budget >= ticket.typePrice() -> CommonTicketFactory(expectedTicketType)
           else -> throw IllegalArgumentException("Your budget does not allow to by this ticket: " + expectedTicketType.toString())
         }
       }
       PhotoAndHologramTicket::class -> {
         val ticket = TicketObject(expectedTicketType, true, true)
         when {
-          budget in ticket.typePrice() .. ticket.typePriceWithPhoto() -> CommonTicketFactory(expectedTicketType)
-          budget in ticket.typePriceWithPhoto() .. ticket.typePriceWithHologram() -> PhotoTicketFactory(expectedTicketType)
-          budget in ticket.typePriceWithHologram() .. ticket.typePriceWithPhotoAndHologram() -> HologramTicketFactory(expectedTicketType)
           budget >= ticket.typePriceWithPhotoAndHologram() -> PhotoAndHologramTicketFactory(expectedTicketType)
+          budget >= ticket.typePriceWithHologram() -> HologramTicketFactory(expectedTicketType)
+          budget >= ticket.typePriceWithPhoto() -> PhotoTicketFactory(expectedTicketType)
+          budget >= ticket.typePrice() -> CommonTicketFactory(expectedTicketType)
           else -> throw IllegalArgumentException("Your budget does not allow to by this ticket: " + expectedTicketType.toString())
         }
       }
@@ -91,7 +91,7 @@ class PhotoAndHologramTicketFactory(private val type: TicketType): TicketFactory
 
 fun main(args: Array<String>) {
   try {
-    val ticketFactory = TicketFactory.createFactory<HologramTicket>(85.0, TicketType.SCIENCE)
+    val ticketFactory = TicketFactory.createFactory<HologramTicket>(80.0, TicketType.SCIENCE)
     val result = ticketFactory.make()
     val ticket = TicketObject(result.type, result.photo, result.hologram)
     println("Summary ticket price: ${ticket.summaryPrice()}")
