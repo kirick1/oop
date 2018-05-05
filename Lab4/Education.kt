@@ -1,8 +1,8 @@
-sealed class Category
-class Unsatisfactorily: Category()
-class Satisfactorily: Category()
-class Nicely: Category()
-class Perfectly: Category()
+sealed class Category { abstract fun score(): Int }
+class Unsatisfactorily: Category() { override fun score(): Int = 2 }
+class Satisfactorily: Category() { override fun score(): Int = 3 }
+class Nicely: Category() { override fun score(): Int = 4 }
+class Perfectly: Category() { override fun score(): Int = 5 }
 
 class Student(private var studiedMaterialFraction: Double = 0.0) {
   private var category: Category = Unsatisfactorily()
@@ -24,15 +24,10 @@ class Student(private var studiedMaterialFraction: Double = 0.0) {
     } else this.studiedMaterialFraction = 1.0
   }
   fun exam() {
-    val score: Int = when (this.category) {
-      is Perfectly -> 5
-      is Nicely -> 4
-      is Satisfactorily -> 3
-      is Unsatisfactorily -> 2
-    }
+    val score = this.category.score()
     when (score) {
-      3, 4, 5 -> println("Congratulations, you passed the exam and your sore is ${score}")
-      else -> println("You did not pass the exam and your score is ${score}")
+      3, 4, 5 -> println("Congratulations, you passed the exam and your sore is $score")
+      else -> println("You did not pass the exam and your score is $score")
     }
   }
 }
@@ -41,6 +36,10 @@ fun main(args: Array<String>) {
   try {
     val student = Student(0.4)
     println("Initial studied material fraction: " + String.format("%.2f", student.fraction()))
+    student.study()
+    student.study()
+    student.study()
+    student.study()
     student.study()
     student.study()
     student.study()
